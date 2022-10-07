@@ -1,0 +1,13 @@
+html {
+  color-scheme: dark;
+}
+
+body {
+  color: white;
+  background: black;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
