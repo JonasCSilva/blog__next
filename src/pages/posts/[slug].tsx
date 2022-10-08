@@ -1,4 +1,8 @@
 import { useQuerySubscription } from "react-datocms";
+import Header from "../../components/header";
+import MoreStories from "../../components/more-stories";
+import PostBody from "../../components/post-body";
+import PostHeader from "../../components/post-header";
 import { request } from "../../lib/datocms";
 import { responsiveImageFragment } from "../../lib/fragments";
 
@@ -82,5 +86,20 @@ export default function Post({ subscription }: any) {
     data: { post, morePosts },
   } = useQuerySubscription(subscription);
 
-  return <></>;
+  return (
+    <div>
+      <Header />
+      <article>
+        <PostHeader
+          title={post.title}
+          coverImage={post.coverImage}
+          date={post.date}
+          author={post.author}
+        />
+        <PostBody content={post.content} />
+      </article>
+      <hr />
+      {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+    </div>
+  );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function CoverImage({ title, responsiveImage, slug }: any) {
   const image = (
+    // eslint-disable-next-line jsx-a11y/alt-text
     <Image
       data={{
         ...responsiveImage,
