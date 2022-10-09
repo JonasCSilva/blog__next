@@ -1,5 +1,5 @@
-import PostPreview from "./post-preview";
-import styles from "../styles/more-stories.module.scss";
+import styles from '../styles/more-stories.module.scss'
+import PostPreview from './post-preview'
 
 export default function MoreStories({ posts }: any) {
   return (
@@ -19,5 +19,5 @@ export default function MoreStories({ posts }: any) {
         ))}
       </main>
     </section>
-  );
+  )
 }

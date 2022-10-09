@@ -11,4 +11,4 @@ export const responsiveImageFragment = `
     title
     base64
   }
-`;
+`

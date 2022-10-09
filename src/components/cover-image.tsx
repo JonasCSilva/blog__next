@@ -1,11 +1,11 @@
-import { Image, ResponsiveImageType } from "react-datocms";
-import Link from "next/link";
+import Link from 'next/link'
+import { Image, ResponsiveImageType } from 'react-datocms'
 
 type Props = {
-  title: string;
-  responsiveImage: ResponsiveImageType;
-  slug?: string;
-};
+  title: string
+  responsiveImage: ResponsiveImageType
+  slug?: string
+}
 
 export default function CoverImage({ title, responsiveImage, slug }: Props) {
   const image = (
@@ -13,10 +13,10 @@ export default function CoverImage({ title, responsiveImage, slug }: Props) {
     <Image
       data={{
         ...responsiveImage,
-        alt: `Cover Image for ${title}`,
+        alt: `Cover Image for ${title}`
       }}
     />
-  );
+  )
 
   return (
     <div>
@@ -28,5 +28,5 @@ export default function CoverImage({ title, responsiveImage, slug }: Props) {
         image
       )}
     </div>
-  );
+  )
 }

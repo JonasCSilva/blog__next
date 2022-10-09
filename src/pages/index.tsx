@@ -1,12 +1,13 @@
-import type { NextPage } from "next";
-import { useQuerySubscription } from "react-datocms";
-import { responsiveImageFragment } from "../lib/fragments";
-import { request } from "../lib/datocms";
-import HeroPost from "../components/hero-post";
-import MoreStories from "../components/more-stories";
-import styles from "../styles/home.module.scss";
-import { CgDarkMode } from "react-icons/cg";
-import { useTheme } from "next-themes";
+import type { NextPage } from 'next'
+import { useTheme } from 'next-themes'
+import { useQuerySubscription } from 'react-datocms'
+import { CgDarkMode } from 'react-icons/cg'
+
+import HeroPost from '../components/hero-post'
+import MoreStories from '../components/more-stories'
+import { request } from '../lib/datocms'
+import { responsiveImageFragment } from '../lib/fragments'
+import styles from '../styles/home.module.scss'
 
 export async function getStaticProps() {
   const graphqlRequest = {
@@ -28,34 +29,34 @@ export async function getStaticProps() {
         }
       }
       ${responsiveImageFragment}
-    `,
-  };
+    `
+  }
 
   return {
     props: {
       subscription: {
         enabled: false,
-        initialData: await request(graphqlRequest as any),
-      },
-    },
-  };
+        initialData: await request(graphqlRequest as any)
+      }
+    }
+  }
 }
 
 const Home: NextPage = ({ subscription }: any) => {
   const {
-    data: { allPosts },
-  } = useQuerySubscription(subscription);
-  const { theme, setTheme } = useTheme();
+    data: { allPosts }
+  } = useQuerySubscription(subscription)
+  const { theme, setTheme } = useTheme()
 
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+  const heroPost = allPosts[0]
+  const morePosts = allPosts.slice(1)
 
   return (
     <div className={styles.root}>
       <header>
         <h1>Blog.</h1>
-        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-          <CgDarkMode size="3rem" />
+        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          <CgDarkMode size='3rem' />
         </button>
       </header>
       {heroPost && (
@@ -70,7 +71,7 @@ const Home: NextPage = ({ subscription }: any) => {
       )}
       {morePosts.length > 0 && <MoreStories posts={morePosts} />}
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

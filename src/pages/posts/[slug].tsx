@@ -1,18 +1,19 @@
-import Link from "next/link";
-import { useQuerySubscription } from "react-datocms";
-import MoreStories from "../../components/more-stories";
-import PostBody from "../../components/post-body";
-import PostHeader from "../../components/post-header";
-import { request } from "../../lib/datocms";
-import { responsiveImageFragment } from "../../lib/fragments";
+import Link from 'next/link'
+import { useQuerySubscription } from 'react-datocms'
+
+import MoreStories from '../../components/more-stories'
+import PostBody from '../../components/post-body'
+import PostHeader from '../../components/post-header'
+import { request } from '../../lib/datocms'
+import { responsiveImageFragment } from '../../lib/fragments'
 
 export async function getStaticPaths() {
-  const data = await request({ query: `{ allPosts { slug } }` } as any);
+  const data = await request({ query: `{ allPosts { slug } }` } as any)
 
   return {
     paths: data.allPosts.map(({ slug }: { slug: string }) => `/posts/${slug}`),
-    fallback: false,
-  };
+    fallback: false
+  }
 }
 
 export async function getStaticProps({ params }: any) {
@@ -67,43 +68,38 @@ export async function getStaticProps({ params }: any) {
       ${responsiveImageFragment}
     `,
     variables: {
-      slug: params.slug,
-    },
-  };
+      slug: params.slug
+    }
+  }
 
   return {
     props: {
       subscription: {
         enabled: false,
-        initialData: await request(graphqlRequest),
-      },
-    },
-  };
+        initialData: await request(graphqlRequest)
+      }
+    }
+  }
 }
 
 export default function Post({ subscription }: any) {
   const {
-    data: { post, morePosts },
-  } = useQuerySubscription(subscription);
+    data: { post, morePosts }
+  } = useQuerySubscription(subscription)
 
   return (
     <div>
       <h2>
-        <Link href="/">
-          <a className="hover:underline">Blog.</a>
+        <Link href='/'>
+          <a>Blog.</a>
         </Link>
       </h2>
       <article>
-        <PostHeader
-          title={post.title}
-          coverImage={post.coverImage}
-          date={post.date}
-          author={post.author}
-        />
+        <PostHeader title={post.title} coverImage={post.coverImage} date={post.date} author={post.author} />
         <PostBody content={post.content} />
       </article>
       <hr />
       {morePosts.length > 0 && <MoreStories posts={morePosts} />}
     </div>
-  );
+  )
 }

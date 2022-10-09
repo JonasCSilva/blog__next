@@ -1,35 +1,25 @@
-import Link from "next/link";
-import { ResponsiveImageType } from "react-datocms";
-import CoverImage from "./cover-image";
-import Date from "./date";
-import styles from "../styles/hero-post.module.scss";
+import Link from 'next/link'
+import { ResponsiveImageType } from 'react-datocms'
+
+import styles from '../styles/hero-post.module.scss'
+import CoverImage from './cover-image'
+import Date from './date'
 
 type Props = {
-  title: string;
+  title: string
   coverImage: {
-    responsiveImage: ResponsiveImageType;
-  };
-  date: string;
-  excerpt: string;
-  author: { name: string };
-  slug: string;
-};
+    responsiveImage: ResponsiveImageType
+  }
+  date: string
+  excerpt: string
+  author: { name: string }
+  slug: string
+}
 
-export default function HeroPost({
-  title,
-  coverImage,
-  date,
-  excerpt,
-  author,
-  slug,
-}: Props) {
+export default function HeroPost({ title, coverImage, date, excerpt, author, slug }: Props) {
   return (
     <section className={styles.root}>
-      <CoverImage
-        title={title}
-        responsiveImage={coverImage.responsiveImage}
-        slug={slug}
-      />
+      <CoverImage title={title} responsiveImage={coverImage.responsiveImage} slug={slug} />
       <main>
         <div>
           <h3>
@@ -45,5 +35,5 @@ export default function HeroPost({
         </div>
       </main>
     </section>
-  );
+  )
 }
