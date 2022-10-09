@@ -51,10 +51,10 @@ const Home: NextPage = ({ subscription }: any) => {
   const morePosts = allPosts.slice(1);
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <h1 className={styles.heading}>Blog.</h1>
-        <button className={styles.button} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+    <div className={styles.root}>
+      <header>
+        <h1>Blog.</h1>
+        <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
           <CgDarkMode size="3rem" />
         </button>
       </header>

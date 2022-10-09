@@ -1,7 +1,13 @@
-import { Image } from "react-datocms";
+import { Image, ResponsiveImageType } from "react-datocms";
 import Link from "next/link";
 
-export default function CoverImage({ title, responsiveImage, slug }: any) {
+type Props = {
+  title: string;
+  responsiveImage: ResponsiveImageType;
+  slug?: string;
+};
+
+export default function CoverImage({ title, responsiveImage, slug }: Props) {
   const image = (
     // eslint-disable-next-line jsx-a11y/alt-text
     <Image
@@ -11,8 +17,9 @@ export default function CoverImage({ title, responsiveImage, slug }: any) {
       }}
     />
   );
+
   return (
-    <div className="-mx-5 sm:mx-0">
+    <div>
       {slug ? (
         <Link href={`/posts/${slug}`}>
           <a aria-label={title}>{image}</a>

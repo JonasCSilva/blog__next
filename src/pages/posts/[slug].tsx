@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { useQuerySubscription } from "react-datocms";
-import Header from "../../components/header";
 import MoreStories from "../../components/more-stories";
 import PostBody from "../../components/post-body";
 import PostHeader from "../../components/post-header";
@@ -88,7 +88,11 @@ export default function Post({ subscription }: any) {
 
   return (
     <div>
-      <Header />
+      <h2>
+        <Link href="/">
+          <a className="hover:underline">Blog.</a>
+        </Link>
+      </h2>
       <article>
         <PostHeader
           title={post.title}

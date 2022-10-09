@@ -1,22 +1,22 @@
-.container {
+.root {
   padding: 3rem 6rem;
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
+  > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 
-.heading {
-  font-size: 6.25rem;
-  font-weight: 700;
-  margin: 0;
-}
+    > h1 {
+      font-size: 6.25rem;
+      font-weight: 700;
+      margin: 0;
+    }
 
-.button {
-  border: none;
-  background-color: unset;
-  cursor: pointer;
+    > button {
+      border: none;
+      background-color: unset;
+      cursor: pointer;
+    }
+  }
 }

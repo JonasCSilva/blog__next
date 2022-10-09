@@ -1,0 +1,29 @@
+.root {
+  > main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    margin-top: 3rem;
+
+    > * {
+      flex: 1;
+    }
+
+    > div {
+      h3 {
+        margin: 0 0 1rem 0;
+
+        a {
+          font-size: 2.75rem;
+          font-weight: 400;
+          color: inherit;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
