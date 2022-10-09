@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import { useTheme } from 'next-themes'
+import Head from 'next/head'
 import { useQuerySubscription } from 'react-datocms'
 import { CgDarkMode } from 'react-icons/cg'
 
@@ -52,25 +53,31 @@ const Index: NextPage = ({ subscription }: any) => {
   const morePosts = allPosts.slice(1)
 
   return (
-    <div className={styles.root}>
-      <header>
-        <h1>Blog.</h1>
-        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-          <CgDarkMode size='3rem' />
-        </button>
-      </header>
-      {heroPost && (
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
-        />
-      )}
-      {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-    </div>
+    <>
+      <Head>
+        <title>Index Page</title>
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <div className={styles.root}>
+        <header>
+          <h1>Blog.</h1>
+          <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+            <CgDarkMode size='3rem' />
+          </button>
+        </header>
+        {heroPost && (
+          <HeroPost
+            title={heroPost.title}
+            coverImage={heroPost.coverImage}
+            date={heroPost.date}
+            author={heroPost.author}
+            slug={heroPost.slug}
+            excerpt={heroPost.excerpt}
+          />
+        )}
+        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      </div>
+    </>
   )
 }
 
