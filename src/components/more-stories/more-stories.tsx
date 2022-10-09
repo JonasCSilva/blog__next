@@ -1,21 +1,29 @@
-import PostPreview from '../post-preview/post-preview'
+import Link from 'next/link'
+
+import { Post } from '../../types'
+import CoverImage from '../cover-image'
+import Date from '../date'
 import styles from './more-stories.module.scss'
 
-export default function MoreStories({ posts }: any) {
+type Props = { posts: Post[] }
+
+export default function MoreStories({ posts }: Props) {
   return (
     <section className={styles.root}>
       <h2>More Stories</h2>
       <main>
-        {posts.map((post: any) => (
-          <PostPreview
-            key={post.slug}
-            title={post.title}
-            coverImage={post.coverImage}
-            date={post.date}
-            author={post.author}
-            slug={post.slug}
-            excerpt={post.excerpt}
-          />
+        {posts.map(({ slug, title, coverImage, date, excerpt, author }: Post, index) => (
+          <section className={styles.root} key={index}>
+            <CoverImage slug={slug} title={title} responsiveImage={coverImage.responsiveImage} />
+            <h3>
+              <Link href={`/posts/${slug}`}>
+                <a>{title}</a>
+              </Link>
+            </h3>
+            <Date dateString={date} />
+            <p>{excerpt}</p>
+            <h1>{author.name}</h1>
+          </section>
         ))}
       </main>
     </section>

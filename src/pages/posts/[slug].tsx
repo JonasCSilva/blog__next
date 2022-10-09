@@ -1,14 +1,19 @@
+import { NextPage } from 'next'
+import { useTheme } from 'next-themes'
 import Link from 'next/link'
-import { useQuerySubscription } from 'react-datocms'
+import { DisabledQueryListenerOptions, useQuerySubscription } from 'react-datocms'
+import { CgDarkMode } from 'react-icons/cg'
 
+import CoverImage from '../../components/cover-image'
+import Date from '../../components/date'
 import MoreStories from '../../components/more-stories/more-stories'
 import PostBody from '../../components/post-body'
-import PostHeader from '../../components/post-header'
 import { request } from '../../lib/datocms'
-import { responsiveImageFragment } from '../../lib/fragments'
+import { postsQuery } from '../../lib/queries'
+import styles from '../../styles/posts.module.scss'
 
 export async function getStaticPaths() {
-  const data = await request({ query: `{ allPosts { slug } }` } as any)
+  const data = await request({ query: `{ allPosts { slug } }` })
 
   return {
     paths: data.allPosts.map(({ slug }: { slug: string }) => `/posts/${slug}`),
@@ -18,55 +23,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   const graphqlRequest = {
-    query: `
-      query PostBySlug($slug: String) {
-        post(filter: {slug: {eq: $slug}}) {
-          title
-          slug
-          content {
-            value
-            blocks {
-              __typename
-              ...on ImageBlockRecord {
-                id
-                image {
-                  responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-                    ...responsiveImageFragment
-                  }
-                }
-              }
-            }
-          }
-          date
-          ogImage: coverImage{
-            url(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 })
-          }
-          coverImage {
-            responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-          }
-        }
-        morePosts: allPosts(orderBy: date_DESC, first: 2, filter: {slug: {neq: $slug}}) {
-          title
-          slug
-          excerpt
-          date
-          coverImage {
-            responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-          }
-        }
-      }
-      ${responsiveImageFragment}
-    `,
+    query: postsQuery,
     variables: {
       slug: params.slug
     }
@@ -82,24 +39,49 @@ export async function getStaticProps({ params }: any) {
   }
 }
 
-export default function Post({ subscription }: any) {
+type Props = {
+  subscription: DisabledQueryListenerOptions<any, any>
+}
+
+const Post: NextPage<Props> = ({ subscription }) => {
   const {
-    data: { post, morePosts }
+    data: {
+      post: { title, author, coverImage, date, content },
+      morePosts
+    }
   } = useQuerySubscription(subscription)
+  const { theme, setTheme } = useTheme()
 
   return (
-    <div>
-      <h2>
-        <Link href='/'>
-          <a>Blog.</a>
-        </Link>
-      </h2>
+    <section className={styles.root}>
+      <header>
+        <h2>
+          <Link href='/'>
+            <a>Blog</a>
+          </Link>
+          .
+        </h2>
+        <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          <CgDarkMode size='3rem' />
+        </button>
+      </header>
       <article>
-        <PostHeader title={post.title} coverImage={post.coverImage} date={post.date} author={post.author} />
-        <PostBody content={post.content} />
+        <header>
+          <h1>{title}</h1>
+          <h3>{author.name}</h3>
+          <CoverImage title={title} responsiveImage={coverImage.responsiveImage} />
+          <div>
+            <Date dateString={date} />
+          </div>
+        </header>
+        <main>
+          <PostBody content={content} />
+        </main>
       </article>
       <hr />
       {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-    </div>
+    </section>
   )
 }
+
+export default Post

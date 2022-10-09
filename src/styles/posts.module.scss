@@ -1,0 +1,87 @@
+.root {
+  padding: 3rem 6rem;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > h2 {
+      font-size: 2.25rem;
+
+      a {
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    > button {
+      border: none;
+      background-color: unset;
+      cursor: pointer;
+    }
+  }
+
+  article {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      > h1 {
+        font-size: 6.25rem;
+        margin: 1rem;
+      }
+
+      > h3 {
+        margin-bottom: 2rem;
+      }
+
+      > div:last-of-type {
+        width: 74%;
+        display: flex;
+        margin: 3rem 13%;
+      }
+    }
+
+    > main {
+      width: 74%;
+      font-size: 1.125rem;
+      line-height: 1.7777778;
+
+      blockquote {
+        margin: 2rem 2.5rem;
+        font-weight: 500;
+        font-style: italic;
+        padding-left: 1rem;
+        border-left: 0.25rem solid #e5e7eb;
+
+        p:before {
+          content: open-quote;
+        }
+
+        p:after {
+          content: close-quote;
+        }
+      }
+
+      pre {
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        background-color: gray;
+      }
+    }
+  }
+
+  > hr {
+    margin-top: 5rem;
+  }
+}

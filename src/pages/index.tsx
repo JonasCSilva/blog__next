@@ -1,49 +1,33 @@
 import type { NextPage } from 'next'
 import { useTheme } from 'next-themes'
 import Head from 'next/head'
-import { useQuerySubscription } from 'react-datocms'
+import { DisabledQueryListenerOptions, useQuerySubscription } from 'react-datocms'
 import { CgDarkMode } from 'react-icons/cg'
 
 import HeroPost from '../components/hero-post/hero-post'
 import MoreStories from '../components/more-stories/more-stories'
 import { request } from '../lib/datocms'
-import { responsiveImageFragment } from '../lib/fragments'
+import { indexQuery } from '../lib/queries'
 import styles from '../styles/index.module.scss'
 
 export async function getStaticProps() {
-  const graphqlRequest = {
-    query: `
-      {
-        allPosts(orderBy: date_DESC, first: 20) {
-          title
-          slug
-          excerpt
-          date
-          coverImage {
-            responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
-              ...responsiveImageFragment
-            }
-          }
-          author {
-            name
-          }
-        }
-      }
-      ${responsiveImageFragment}
-    `
-  }
-
   return {
     props: {
       subscription: {
         enabled: false,
-        initialData: await request(graphqlRequest as any)
+        initialData: await request({
+          query: indexQuery
+        })
       }
     }
   }
 }
 
-const Index: NextPage = ({ subscription }: any) => {
+type Props = {
+  subscription: DisabledQueryListenerOptions<any, any>
+}
+
+const Index: NextPage<Props> = ({ subscription }) => {
   const {
     data: { allPosts }
   } = useQuerySubscription(subscription)

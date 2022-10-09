@@ -1,6 +1,13 @@
 import tiny from 'tiny-json-http'
 
-export async function request({ query, variables }: any) {
+type Props = {
+  query: string
+  variables?: {
+    slug: string
+  }
+}
+
+export async function request({ query, variables }: Props): Promise<any> {
   const { body } = await tiny.post({
     url: 'https://graphql.datocms.com',
     headers: {

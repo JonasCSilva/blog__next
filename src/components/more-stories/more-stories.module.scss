@@ -1,5 +1,5 @@
 .root {
-  margin-top: 6rem;
+  margin-top: 4rem;
 
   h2 {
     font-size: 4.5rem;
@@ -9,5 +9,23 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 6rem;
+
+    section {
+      display: flex;
+      flex-direction: column;
+
+      h3 {
+        a {
+          font-size: 1.875rem;
+          font-weight: 400;
+          color: inherit;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
   }
 }
