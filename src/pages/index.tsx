@@ -3,11 +3,11 @@ import { useTheme } from 'next-themes'
 import { useQuerySubscription } from 'react-datocms'
 import { CgDarkMode } from 'react-icons/cg'
 
-import HeroPost from '../components/hero-post'
-import MoreStories from '../components/more-stories'
+import HeroPost from '../components/hero-post/hero-post'
+import MoreStories from '../components/more-stories/more-stories'
 import { request } from '../lib/datocms'
 import { responsiveImageFragment } from '../lib/fragments'
-import styles from '../styles/home.module.scss'
+import styles from '../styles/index.module.scss'
 
 export async function getStaticProps() {
   const graphqlRequest = {
@@ -42,7 +42,7 @@ export async function getStaticProps() {
   }
 }
 
-const Home: NextPage = ({ subscription }: any) => {
+const Index: NextPage = ({ subscription }: any) => {
   const {
     data: { allPosts }
   } = useQuerySubscription(subscription)
@@ -74,4 +74,4 @@ const Home: NextPage = ({ subscription }: any) => {
   )
 }
 
-export default Home
+export default Index

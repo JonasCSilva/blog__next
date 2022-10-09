@@ -1,4 +1,4 @@
-import '../styles/globals.scss'
+import '../globals.scss'
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
 

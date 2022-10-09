@@ -1,5 +1,5 @@
-import styles from '../styles/more-stories.module.scss'
-import PostPreview from './post-preview'
+import PostPreview from '../post-preview/post-preview'
+import styles from './more-stories.module.scss'
 
 export default function MoreStories({ posts }: any) {
   return (

@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { ResponsiveImageType } from 'react-datocms'
 
-import styles from '../styles/post-preview.module.scss'
-import CoverImage from './cover-image'
-import Date from './date'
+import CoverImage from '../cover-image'
+import Date from '../date'
+import styles from './post-preview.module.scss'
 
 type Props = {
   title: string

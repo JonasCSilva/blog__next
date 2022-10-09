@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useQuerySubscription } from 'react-datocms'
 
-import MoreStories from '../../components/more-stories'
+import MoreStories from '../../components/more-stories/more-stories'
 import PostBody from '../../components/post-body'
 import PostHeader from '../../components/post-header'
 import { request } from '../../lib/datocms'
