@@ -13,8 +13,8 @@ export default function MoreStories({ posts }: Props) {
       <h2>More Stories</h2>
       <main>
         {posts.map(({ slug, title, coverImage, date, excerpt, author }: Post, index) => (
-          <section className={styles.root} key={index}>
-            <CoverImage slug={slug} title={title} responsiveImage={coverImage.responsiveImage} />
+          <section key={index}>
+            {coverImage && <CoverImage slug={slug} title={title} responsiveImage={coverImage.responsiveImage} />}
             <h3>
               <Link href={`/posts/${slug}`}>
                 <a>{title}</a>

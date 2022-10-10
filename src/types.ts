@@ -1,11 +1,12 @@
-import { ResponsiveImageType } from 'react-datocms'
+import { ResponsiveImageType, StructuredTextDocument } from 'react-datocms'
 
 export type Post = {
   title: string
   slug: string
   excerpt: string
   date: string
-  coverImage: {
+  content: StructuredTextDocument
+  coverImage?: {
     responsiveImage: ResponsiveImageType
   }
   author: { name: string }

@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { DisabledQueryListenerOptions, useQuerySubscription } from 'react-datocms'
 import { CgDarkMode } from 'react-icons/cg'
 
@@ -11,6 +12,7 @@ import PostBody from '../../components/post-body'
 import { request } from '../../lib/datocms'
 import { postsQuery } from '../../lib/queries'
 import styles from '../../styles/posts.module.scss'
+import { Post } from '../../types'
 
 export async function getStaticPaths() {
   const data = await request({ query: `{ allPosts { slug } }` })
@@ -32,7 +34,6 @@ export async function getStaticProps({ params }: any) {
   return {
     props: {
       subscription: {
-        enabled: false,
         initialData: await request(graphqlRequest)
       }
     }
@@ -40,17 +41,27 @@ export async function getStaticProps({ params }: any) {
 }
 
 type Props = {
-  subscription: DisabledQueryListenerOptions<any, any>
+  subscription: DisabledQueryListenerOptions<{ post: Post; morePosts: Post[] }, never>
 }
 
-const Post: NextPage<Props> = ({ subscription }) => {
-  const {
-    data: {
-      post: { title, author, coverImage, date, content },
-      morePosts
-    }
-  } = useQuerySubscription(subscription)
+const Posts: NextPage<Props> = ({ subscription }) => {
+  const { data } = useQuerySubscription(subscription)
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [post, setPost] = useState<Post>(subscription!.initialData!.post)
+  const [morePosts, setMorePosts] = useState<Post[]>(subscription!.initialData!.morePosts)
+
+  useEffect(() => {
+    setMounted(true)
+    if (data) {
+      setPost(data.post)
+      setMorePosts(data.morePosts)
+    }
+  }, [data])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <section className={styles.root}>
@@ -67,15 +78,15 @@ const Post: NextPage<Props> = ({ subscription }) => {
       </header>
       <article>
         <header>
-          <h1>{title}</h1>
-          <h3>{author.name}</h3>
-          <CoverImage title={title} responsiveImage={coverImage.responsiveImage} />
+          <h1>{post!.title}</h1>
+          <h3>{post!.author.name}</h3>
+          {post!.coverImage && <CoverImage title={post!.title} responsiveImage={post!.coverImage.responsiveImage} />}
           <div>
-            <Date dateString={date} />
+            <Date dateString={post!.date} />
           </div>
         </header>
         <main>
-          <PostBody content={content} />
+          <PostBody content={post!.content} />
         </main>
       </article>
       <hr />
@@ -84,4 +95,4 @@ const Post: NextPage<Props> = ({ subscription }) => {
   )
 }
 
-export default Post
+export default Posts
