@@ -7,7 +7,7 @@ type Props = {
   }
 }
 
-export async function request({ query, variables }: Props): Promise<any> {
+export async function request<T>({ query, variables }: Props): Promise<T> {
   const { body } = await tiny.post({
     url: 'https://graphql.datocms.com',
     headers: {
@@ -20,7 +20,7 @@ export async function request({ query, variables }: Props): Promise<any> {
   })
 
   if (body.errors) {
-    console.error('Ouch! The query has some errors!')
+    console.error('The query has some errors!')
     throw body.errors
   }
 

@@ -1,8 +1,6 @@
-import { NextPage } from 'next'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { DisabledQueryListenerOptions, useQuerySubscription } from 'react-datocms'
 import { CgDarkMode } from 'react-icons/cg'
 
 import CoverImage from '../../components/cover-image'
@@ -14,8 +12,10 @@ import { postsQuery } from '../../lib/queries'
 import styles from '../../styles/posts.module.scss'
 import { Post } from '../../types'
 
-export async function getStaticPaths() {
-  const data = await request({ query: `{ allPosts { slug } }` })
+type Props = { initialData: { mainPost: Post; otherPosts: Post[] } }
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const data = await request<{ allPosts: Post[] }>({ query: `{ allPosts { slug } }` })
 
   return {
     paths: data.allPosts.map(({ slug }: { slug: string }) => `/posts/${slug}`),
@@ -23,45 +23,24 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }: any) {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const graphqlRequest = {
     query: postsQuery,
     variables: {
-      slug: params.slug
+      slug: params!.slug as string
     }
   }
 
-  return {
-    props: {
-      subscription: {
-        initialData: await request(graphqlRequest)
-      }
-    }
+  return { props: { initialData: await request(graphqlRequest) } }
+}
+
+const Posts: NextPage<Props> = ({
+  initialData: {
+    mainPost: { title, author, coverImage, date, content },
+    otherPosts
   }
-}
-
-type Props = {
-  subscription: DisabledQueryListenerOptions<{ post: Post; morePosts: Post[] }, never>
-}
-
-const Posts: NextPage<Props> = ({ subscription }) => {
-  const { data } = useQuerySubscription(subscription)
+}) => {
   const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  const [post, setPost] = useState<Post>(subscription!.initialData!.post)
-  const [morePosts, setMorePosts] = useState<Post[]>(subscription!.initialData!.morePosts)
-
-  useEffect(() => {
-    setMounted(true)
-    if (data) {
-      setPost(data.post)
-      setMorePosts(data.morePosts)
-    }
-  }, [data])
-
-  if (!mounted) {
-    return null
-  }
 
   return (
     <section className={styles.root}>
@@ -78,19 +57,19 @@ const Posts: NextPage<Props> = ({ subscription }) => {
       </header>
       <article>
         <header>
-          <h1>{post!.title}</h1>
-          <h3>{post!.author.name}</h3>
-          {post!.coverImage && <CoverImage title={post!.title} responsiveImage={post!.coverImage.responsiveImage} />}
+          <h1>{title}</h1>
+          <h3>{author.name}</h3>
+          {coverImage && <CoverImage title={title} responsiveImage={coverImage.responsiveImage} />}
           <div>
-            <Date dateString={post!.date} />
+            <Date dateString={date} />
           </div>
         </header>
         <main>
-          <PostBody content={post!.content} />
+          <PostBody content={content} />
         </main>
       </article>
       <hr />
-      {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+      {otherPosts.length > 0 && <MoreStories posts={otherPosts} />}
     </section>
   )
 }
